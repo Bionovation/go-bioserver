@@ -2,17 +2,25 @@
 package main
 
 import (
-	"github.com/Bionovation/go-bioserver/handle"
 	"github.com/gin-gonic/gin"
 )
 
+const BioFolder  = "D:/BioScan"
+
 func main() {
 	r := gin.Default()
-	r.GET("/ping", handle.Ping)
-	r.GET("/image", handle.Image)
-	r.GET("/slides", handle.SlideList)
-	r.GET("/slideinfo", handle.SlideInfo)
-	r.GET("/slidetile", handle.SlideTile)
+
+	//r.Static("/","C:/BioImgServer/Html/")
+	//r.StaticFile("/","C:/BioImgServer/Html/")
+
+	r.GET("/ping", handlePing)
+	r.GET("/image", handleImage)
+	r.GET("/slides", handleSlideList)
+	r.GET("/slideinfo", handleSlideInfo)
+	r.GET("/slidetile", handleSlideTile)
+
+	r.GET("/lua", handleLua)
+
 
 	r.Run(":9999")
 }

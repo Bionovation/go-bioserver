@@ -1,4 +1,4 @@
-package handle
+package cgo
 
 /*
 #include <stdio.h>
@@ -26,19 +26,16 @@ import "C"
 import (
 	"fmt"
 	"unsafe"
-
-	"github.com/gin-gonic/gin"
 )
 
-func Image(c *gin.Context) {
-	str1 := "D:\\test.jpg"
-	cstr1 := C.CString(str1)
+func Read(imgPath string) ([]byte, error)  {
+	cstr1 := C.CString(imgPath)
 	defer C.free(unsafe.Pointer(cstr1))
 	b := make([]byte, 1024*1024) // 1MB
 	imgSize := C.readfile(cstr1, (*C.char)(unsafe.Pointer(&b[0])), C.int32_t(len(b)))
 	fmt.Println(imgSize)
 
 	b = b[:imgSize]
-
-	c.Data(200, "image/jpeg", b)
+	return b, nil
 }
+
