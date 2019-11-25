@@ -1,0 +1,104 @@
+﻿<html xmlns="http://www.w3.org/1999/xhtml">
+
+	<head>
+		<meta charset="UTF-8" />
+		<title>Bionovation 切片库</title> 
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge"> 
+		<link href="css/bootstrap.css" rel="stylesheet" />
+		<link href="css/mystyle.css" rel="stylesheet" type="text/css" />
+		<link rel="stylesheet" href="css/font-awesome.css" />
+		<script src="Scripts/jquery-1.9.1.min.js" type="text/javascript"></script>
+		<script src="Scripts/bootstrap.min.js" type="text/javascript"></script>  
+        <script type="text/javascript" src='js/config.js'></script>  
+	</head> 
+    <body>
+        <nav class="navbar navbar-default navbar-fixed-top" role="navigation" id="not_pc_navbar">
+            <a class="navbar-brand" href="#" style="background-color: #0099ff;color: White; font-size: 18px;width:100%;float:right;">
+                Bionovation 切片库
+                <span id="not_pc_notloggedin" style="color: White; font-size: 12px;float:right;margin-right: 15px;" class="show">登录</span>
+                <span id="not_pc_loggedin" style="color: White; font-size: 12px;float:right;margin-right: 15px;" class="hidden"></span>
+            </a>
+        </nav>
+        <div class="container" id="pc_slidelist_content">
+            <div class="row" style="margin-top: 55px;" id="slidelist"></div>
+            <div class="row" style="margin-top: 5px;">
+                <div class="col-md-12 ">
+                    <table class="table table-hover" style="width: 100%;" id="slidelisttb">
+                        <thead>
+                            <tr>
+                                <th width="20px">#</th>
+                                <th width="235px">缩略图</th>
+                                <th width="80px">性别</th>
+                                <th width="80px">年龄</th>
+                                <th width="40%">病史</th>
+                                <th width="100px"></th>
+                            </tr>
+                        </thead>
+                        <tbody style="background: white" id="slidelist2"> 
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 ">
+                    <div align="center" id="pagination_box">
+                        <ul id="visible-pages" style="height: 25px"></ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container" id="not_pc_slidelist_content">
+            <div class="row">
+            </div>
+        </div>
+        </div>
+        <div class="footer">
+            <div class="container">
+                <p style="color: #666;"></p>
+            </div>
+        </div>
+
+
+        <script>
+            function browseSample(pathImg) {
+                var path = config.host + "/sample.html";
+                window.open(path + "?samplePath=" + pathImg);
+            }
+            $(function () {
+               //ShowHtml(null);
+                var url = config.host + "/GetImageList";
+                $.get(url, function (data, status) {
+                    if (status == "success") {
+                        ShowHtml(data);
+                    } else { 
+                        console.error("failed. ")
+                    }
+                });
+            });
+           
+
+            function ShowHtml(list) {
+               // list = ["D:\\BioScan\\2019-07-30-18-25-32", "D:\\BioScan\\2019-07-29-16-28-49","D:\\BioScan\\2019-07-22-10-14-49"];
+                for (var i = 0; i < list.length; i++) {
+                    var path = list[i];                    
+                    var picSrcPath = config.host + "/GetImageThumbNil?path=" + path; 
+                    var num = i + 1;
+                    var fileName = getFileName(path);
+                    var html = "<tr onclick='browseSample(\""+encodeURI(path)+"\")'>";
+                    html += "<td style='color:#428bca; font-size:16px'>" + num + "</td>";
+                    html += "<td> <div class='col-md-12 ' style=' width:238px'>";
+                    html += "<div class='thumbnail' style='margin-bottom:0px;text-align: center'><img src=" + picSrcPath+" style='height: 106px; max-width:100px;'></div> </div> </td>";
+                    html += "<td></td>  <td> </td> ";
+                    html += "<td>" + fileName+"</td> ";
+                    html += " <td style=' font-size:14px; padding:4px'>  <a onclick='browseSample(\"" + encodeURI(path) + "\")' target='_blank'><i class='fa fa-eye' aria-hidden='true'></i>浏览(100)</a></td> </tr>";
+                    $("#slidelist2").append(html);
+                }
+            }
+            function getFileName(file) {
+                return file.substring(file.lastIndexOf("\\") + 1);
+            }
+        </script>
+    </body>
+
+</html>

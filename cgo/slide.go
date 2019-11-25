@@ -1,7 +1,7 @@
 package cgo
 
 /*
-#include "C:/BioImgServer/BioImgCore/BioImgCore/GoInterfaces.h"
+#include "C:/BioImgServer/BioImgCore/BioImgCore/src/GoInterfaces.h"
 
 #cgo windows LDFLAGS: -LC:/BioImgServer/BioImgCore/x64/Release -lBioImgCore
 */
@@ -16,10 +16,10 @@ func SlideTile(path string, level, x, y int) ([]byte, error) {
 	cpath := C.CString(path)
 	defer C.free(unsafe.Pointer(cpath))
 
-	bsize := 256*256*4;
+	bsize := 256 * 256 * 4
 	buf := make([]byte, bsize)
 	bs := C.ReadSlideTile(cpath, C.int(level), C.int(x), C.int(y), 256, (*C.char)(unsafe.Pointer(&buf[0])), C.int(bsize))
-	if bs < 0{
+	if bs < 0 {
 		return nil, fmt.Errorf("read slide tile falied.")
 	}
 	buf = buf[:bs]
@@ -37,7 +37,7 @@ func SlideInfo(path string) (string, error) {
 	sz := C.ReadSlideInfo(cpath, cinfo)
 
 	ginfo := C.GoString(cinfo)
-	if sz < 0 || ginfo == ""{
+	if sz < 0 || ginfo == "" {
 		return "", fmt.Errorf("ReadSlideInfo falied.")
 	}
 
