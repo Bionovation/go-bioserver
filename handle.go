@@ -16,6 +16,11 @@ func handlePing(c *gin.Context) {
 	c.String(http.StatusOK, "pong!")
 }
 
+// 返回服务器地址
+func handleHost(c *gin.Context) {
+	c.String(http.StatusOK, c.Request.Host)
+}
+
 // 测试图像数据读取
 func handleImage(c *gin.Context) {
 	b, err := cgo.Read("D:/256.jpg")

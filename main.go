@@ -15,6 +15,7 @@ func main() {
 	r.StaticFS("/html", http.Dir("./html"))
 	r.StaticFS("/openseadragon", http.Dir("./html/openseadragon"))
 
+	r.GET("/host", handleHost)
 	r.GET("/ping", handlePing)
 	r.GET("/image", handleImage)
 	r.GET("/slides", handleSlideList)
