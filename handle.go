@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"net/http"
 	"strconv"
 
@@ -36,13 +37,26 @@ func handleSlideList(c *gin.Context) {
 }
 
 func handleSlideInfo(c *gin.Context) {
+	type SlideInfo struct {
+		Levels int `json:"levels"`
+		Width  int `json:"width"`
+		Height int `json:"height"`
+	}
+
 	path := c.Query("path")
-	//cgo.SlideInfo(filepath.Join(path,"data.bimg"))
 	info, err := cgo.SlideInfo(path)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, err)
+		return
 	}
-	c.String(http.StatusOK, info)
+	tinfo := SlideInfo{}
+	err = json.Unmarshal([]byte(info), &tinfo)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, err)
+		return
+	}
+
+	c.JSON(http.StatusOK, tinfo)
 }
 
 // 读取瓦片
@@ -58,6 +72,17 @@ func handleSlideTile(c *gin.Context) {
 	buf, err := cgo.SlideTile(path, z, x, y)
 	if err != nil {
 		c.String(http.StatusInternalServerError, "读取切片失败.")
+		return
+	}
+
+	c.Data(http.StatusOK, "image/jpeg", buf)
+}
+
+func handleSlideNail(c *gin.Context) {
+	path := c.Query("path")
+	buf, err := cgo.SlideNail(path)
+	if err != nil {
+		c.String(http.StatusInternalServerError, "读取缩略图失败.")
 		return
 	}
 

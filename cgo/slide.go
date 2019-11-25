@@ -43,3 +43,18 @@ func SlideInfo(path string) (string, error) {
 
 	return ginfo, nil
 }
+
+func SlideNail(path string) ([]byte, error) {
+	cpath := C.CString(path)
+	defer C.free(unsafe.Pointer(cpath))
+
+	bsize := 1024 * 1024 / 2
+	buf := make([]byte, bsize)
+	bs := C.ReadSlideNail(cpath, (*C.char)(unsafe.Pointer(&buf[0])), C.int(bsize))
+	if bs < 0 {
+		return nil, fmt.Errorf("read slide tile falied.")
+	}
+	buf = buf[:bs]
+
+	return buf, nil
+}

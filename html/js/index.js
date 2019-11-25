@@ -13,7 +13,7 @@ function createViewer(host,path, w, h) {
             tileSize: 256,
             minLevel: 8,
             getTileUrl: function( level, x, y ){
-                return host + "/GetImageTileNoBuf?" + 
+                return host + "/slidetile?" + 
                 "path=" + path + 
                 "&level="+(level-8)+
                 "&x="+x+
@@ -37,7 +37,7 @@ function createViewer(host,path, w, h) {
 } */
 
 function Init(path) {    
-    var url = config.host + "/GetImageInfo?path="+path; 
+    var url = config.host + "/slideinfo?path="+path; 
     $.get(url,function(data,status){
         if(status == "success"){
             createViewer(config.host, path, data.width, data.height);

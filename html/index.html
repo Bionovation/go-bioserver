@@ -62,12 +62,12 @@
 
         <script>
             function browseSample(pathImg) {
-                var path = config.host + "/sample.html";
+                var path = "./sample.html";
                 window.open(path + "?samplePath=" + pathImg);
             }
             $(function () {
                //ShowHtml(null);
-                var url = config.host + "/GetImageList";
+                var url = config.host + "/slides";
                 $.get(url, function (data, status) {
                     if (status == "success") {
                         ShowHtml(data);
@@ -82,7 +82,7 @@
                // list = ["D:\\BioScan\\2019-07-30-18-25-32", "D:\\BioScan\\2019-07-29-16-28-49","D:\\BioScan\\2019-07-22-10-14-49"];
                 for (var i = 0; i < list.length; i++) {
                     var path = list[i];                    
-                    var picSrcPath = config.host + "/GetImageThumbNil?path=" + path; 
+                    var picSrcPath = config.host + "/slidenail?path=" + path; 
                     var num = i + 1;
                     var fileName = getFileName(path);
                     var html = "<tr onclick='browseSample(\""+encodeURI(path)+"\")'>";

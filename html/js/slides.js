@@ -34,7 +34,7 @@ function createViewer(host, path, w, h) {
             tileSize: 256,
             minLevel: 8,
             getTileUrl: function( level, x, y ){
-                return host + "/GetImageTile?" + 
+                return host + "/slidetile?" + 
                 "path=" + path + 
                 "&level="+(level-8)+
                 "&x="+x+
@@ -45,7 +45,7 @@ function createViewer(host, path, w, h) {
 }
 
 function Init() {
-    var url = config.host + "/GetImageList"; 
+    var url = config.host + "/slides"; 
     $.get(url,function(data,status){
         if(status == "success"){
             createList(data)
