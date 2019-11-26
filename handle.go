@@ -32,7 +32,7 @@ func handleImage(c *gin.Context) {
 
 // 获取扫描数据列表
 func handleSlideList(c *gin.Context) {
-	sl, err := SlideList(BioFolder)
+	sl, err := SlideList(bioConfig.DataFolder)
 	if err != nil {
 		c.JSON(http.StatusNotFound, err)
 	} else {
