@@ -11,6 +11,10 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+func handleIndex(c *gin.Context) {
+	c.Redirect(http.StatusFound, "/html/")
+}
+
 // 服务器状态测试
 func handlePing(c *gin.Context) {
 	c.String(http.StatusOK, "pong!")
@@ -32,7 +36,7 @@ func handleImage(c *gin.Context) {
 
 // 获取扫描数据列表
 func handleSlideList(c *gin.Context) {
-	sl, err := SlideList(bioConfig.DataFolder)
+	sl, err := SlideList(bioConfig.Common.DataFolder)
 	if err != nil {
 		c.JSON(http.StatusNotFound, err)
 	} else {
