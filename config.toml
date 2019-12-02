@@ -1,6 +1,6 @@
 [common]
-MachineName = "aigo"
-DataFolder = "F:/BioSlides"
+MachineName = "gray"
+DataFolder = "D:/BioScan"
 ListenPort = 8080
 
 [proxy]
