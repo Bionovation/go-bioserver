@@ -4,7 +4,7 @@ DataFolder = "F:/BioSlides"
 ListenPort = 8080
 
 [proxy]
-ServerAddr = "remotebionovation.com"
+ServerAddr = "slide.bionovationimc.com"
 ServerPort = 7000
 
 
