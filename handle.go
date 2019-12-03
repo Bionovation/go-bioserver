@@ -65,6 +65,8 @@ func handleSlideInfo(c *gin.Context) {
 		return
 	}
 
+	bioGC.Visit(path) // gc
+
 	c.JSON(http.StatusOK, tinfo)
 }
 
@@ -83,6 +85,8 @@ func handleSlideTile(c *gin.Context) {
 		c.String(http.StatusInternalServerError, "读取切片失败.")
 		return
 	}
+
+	bioGC.Visit(path) // gc
 
 	c.Data(http.StatusOK, "image/jpeg", buf)
 }

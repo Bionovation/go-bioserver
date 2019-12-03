@@ -44,6 +44,7 @@ func SlideInfo(path string) (string, error) {
 	return ginfo, nil
 }
 
+// 获取缩略图
 func SlideNail(path string) ([]byte, error) {
 	cpath := C.CString(path)
 	defer C.free(unsafe.Pointer(cpath))
@@ -57,4 +58,13 @@ func SlideNail(path string) ([]byte, error) {
 	buf = buf[:bs]
 
 	return buf, nil
+}
+
+// 释放内存
+func SlideClose(path string) error {
+	cpath := C.CString(path)
+	defer C.free(unsafe.Pointer(cpath))
+
+	C.CloseSlide(cpath)
+	return nil
 }

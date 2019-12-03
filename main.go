@@ -12,8 +12,9 @@ import (
 const cfile = "./config.toml"
 
 func main() {
-	bioConfig.readConfig(cfile)
-	go frpLogin()
+	bioConfig.readConfig(cfile) // 读取配置文件
+	go frpLogin()               // 登录frp代理服务
+	go clearRoutine(nil)        // 运行内存清理线程
 
 	gin.SetMode(gin.ReleaseMode)
 	r := gin.Default()
