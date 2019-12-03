@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"sync"
 	"time"
 
@@ -40,16 +41,16 @@ func (gc *SlideGC) Clear(dropSecond int) error {
 		var path string
 		var t time.Time
 		if path, ok = k.(string); ok != true {
-			fmt.Println("path convert error.")
+			log.Println("path convert error.")
 			return true
 		}
 		if t, ok = v.(time.Time); ok != true {
-			fmt.Println("time convert error.")
+			log.Println("time convert error.")
 			return true
 		}
 		//fmt.Println(path)
 		if tNow.Sub(t).Seconds() > float64(dropSecond) {
-			fmt.Println(path, "clear...")
+			log.Println(path, "clear...")
 			gc.Map.Delete(path)
 			cgo.SlideClose(path)
 		}

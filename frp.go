@@ -8,6 +8,9 @@ import (
 	"log"
 	"os"
 	"os/exec"
+	"strconv"
+	"strings"
+	"syscall"
 	//"github.com/fatedier/frp/client"
 	//"github.com/fatedier/frp/models/config"
 	//"github.com/fatedier/frp/models/consts"
@@ -51,7 +54,53 @@ func frpLogin() error {
 }
 */
 
+func isProcessExist(appName string) (bool, string, int) {
+	appary := make(map[string]int)
+	cmd := exec.Command("cmd", "/C", "tasklist")
+	cmd.SysProcAttr = &syscall.SysProcAttr{HideWindow: true} // 隐藏窗口
+	output, _ := cmd.Output()
+	//fmt.Printf("fields: %v\n", output)
+	n := strings.Index(string(output), "System")
+	if n == -1 {
+		fmt.Println("no find")
+		os.Exit(1)
+	}
+	data := string(output)[n:]
+	fields := strings.Fields(data)
+	for k, v := range fields {
+		if v == appName {
+			appary[appName], _ = strconv.Atoi(fields[k+1])
+
+			return true, appName, appary[appName]
+		}
+	}
+
+	return false, appName, -1
+}
+
+func killProcess(appName string) error {
+	c := exec.Command("cmd.exe", "/C", "taskkill", "/IM", appName)
+	c.SysProcAttr = &syscall.SysProcAttr{HideWindow: true} // 隐藏窗口
+	err := c.Start()
+	if err != nil {
+		return err
+	}
+	c.Wait()
+	return nil
+}
+
 func frpLogin() error {
+
+	b, _, _ := isProcessExist("frpc.exe")
+	if b {
+		log.Println("frpc stopping")
+		killProcess("frpc.exe")
+	} else {
+		log.Println("frpc startting")
+	}
+
+	log.Println("frpc startting")
+
 	var iniContent string
 	iniContent = fmt.Sprintf(
 		`[common]
@@ -77,12 +126,6 @@ custom_domains=%v.%v`,
 		return err
 	}
 
-	/*binary, err := exec.LookPath("./proxy/frpc.exe")
-	if err != nil {
-		log.Println("look up frpc failed, error:", err)
-		return err
-	}*/
-
 	args := []string{"-c", "./proxy/frpc.ini"}
 
 	cmd := exec.Command("./proxy/frpc.exe", args...)
@@ -93,6 +136,7 @@ custom_domains=%v.%v`,
 	stdout := io.MultiWriter(os.Stdout, &stdoutBuf)
 	stderr := io.MultiWriter(os.Stderr, &stderrBuf)
 
+	cmd.SysProcAttr = &syscall.SysProcAttr{HideWindow: true} // 隐藏窗口
 	if err := cmd.Start(); err != nil {
 		log.Println("exec frpc failed, error:", err)
 		return err
