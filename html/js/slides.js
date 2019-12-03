@@ -25,9 +25,10 @@ function createViewer(host, path, w, h) {
     viewer = OpenSeadragon({
         id:            "openseadragon1",
         prefixUrl:     "/openseadragon/images/",
-        navigatorSizeRatio: 0.25,
+        navigatorSizeRatio: 0.2,
         wrapHorizontal:     false,
 		showNavigator:  true, 
+		springStiffness: 10,
         tileSources:   {
             height: h,
             width:  w,

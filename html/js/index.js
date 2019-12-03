@@ -4,9 +4,10 @@ function createViewer(host,path, w, h) {
     viewer = OpenSeadragon({
         id:            "contentDiv",
         prefixUrl:     "/openseadragon/images/",
-        navigatorSizeRatio: 0.25,
+        navigatorSizeRatio: 0.2,
         wrapHorizontal:     false,
 		showNavigator:  true, 
+		minScrollDeltaTime: 25,
         tileSources:   {
             height: h,
             width:  w,
