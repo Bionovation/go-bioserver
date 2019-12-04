@@ -4,6 +4,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 	"os"
 
@@ -21,11 +22,12 @@ func stdToFile() {
 	f, _ := os.OpenFile("./go-bioserver.log", os.O_WRONLY|os.O_CREATE|os.O_SYNC|os.O_APPEND, 0755)
 	os.Stdout = f
 	os.Stderr = f
+	log.SetOutput(f)
 }
 
 func main() {
 	// 重定向标准输出到文件
-	//stdToFile()
+	stdToFile()
 	bioConfig.readConfig(cfile) // 读取配置文件
 	go frpLogin()               // 登录frp代理服务
 	go clearRoutine(nil)        // 运行内存清理线程
