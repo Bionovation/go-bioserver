@@ -2,14 +2,12 @@ package main
 
 import (
 	"encoding/json"
-	//"log"
 	"net/http"
 	"strconv"
 
-	"github.com/yuin/gopher-lua"
-
 	"github.com/Bionovation/go-bioserver/cgo"
 	"github.com/gin-gonic/gin"
+	"github.com/yuin/gopher-lua"
 )
 
 func handleIndex(c *gin.Context) {
@@ -36,7 +34,7 @@ func handleImage(c *gin.Context) {
 }
 
 // 获取扫描数据列表
-func handleSlideList(c *gin.Context) {
+/*func handleSlideList(c *gin.Context) {
 	sl, err := SlideList(bioConfig.Common.DataFolder)
 	if err != nil {
 		c.JSON(http.StatusNotFound, err)
@@ -44,6 +42,47 @@ func handleSlideList(c *gin.Context) {
 		c.JSON(http.StatusOK, sl)
 	}
 
+}*/
+
+func handleSlideList(c *gin.Context) {
+	res := NewRes()
+	sl, err := SlideList(bioConfig.Common.DataFolder)
+	if err != nil {
+		res.FailErr(c, err)
+		return
+	}
+
+	// 分页显示
+	type Page struct {
+		Index  int      `json:"index"`
+		Count  int      `json:"count"`
+		Total  int      `json:"total"`
+		Slides []string `json:"slides"`
+	}
+
+	page := &Page{}
+
+	page.Total = len(sl)
+
+	if page.Index, err = strconv.Atoi(c.Query("index")); err != nil {
+		page.Index = 0
+	}
+
+	if page.Count, err = strconv.Atoi(c.Query("count")); err != nil {
+		page.Count = 30
+	}
+
+	if page.Index >= page.Total {
+		page.Count = 0
+	} else if page.Index+page.Count >= page.Total {
+		page.Count = page.Total - page.Index
+	}
+
+	page.Slides = sl[page.Index : page.Index+page.Count]
+
+	//log.Println(page)
+
+	res.DoneData(c, page)
 }
 
 func handleSlideInfo(c *gin.Context) {
