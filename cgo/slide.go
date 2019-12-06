@@ -8,6 +8,7 @@ package cgo
 import "C"
 import (
 	"fmt"
+	"os"
 	"unsafe"
 )
 
@@ -40,8 +41,17 @@ func SlideInfo(path string) (string, error) {
 	if sz < 0 || ginfo == "" {
 		return "", fmt.Errorf("ReadSlideInfo falied.")
 	}
-
 	return ginfo, nil
+
+	// slideinfopath := fmt.Sprintf("%s/slideinfo.json", path)
+	// inputFile, inputError := os.Open(slideinfopath)
+	// if inputError != nil {
+	// 	return nil, nil
+	// } else {
+	// 	return ioutil.ReadAll(f), nil
+	// }
+	// defer inputFile.Close()
+
 }
 
 // 获取缩略图

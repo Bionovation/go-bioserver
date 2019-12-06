@@ -1,2 +1,2 @@
 set path=%path%;%cd%\dlls
-go-bioserver.exe
+start go-bioserver.exe
