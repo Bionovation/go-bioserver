@@ -48,6 +48,7 @@ func main() {
 	r.GET("/slidenail", handleSlideNail)
 
 	r.GET("/lua", handleLua)
+	r.GET("/test", handleTest)
 
 	r.Run(fmt.Sprintf(":%v", bioConfig.Common.ListenPort))
 }

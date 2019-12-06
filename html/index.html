@@ -1,208 +1,234 @@
 ﻿<html xmlns="http://www.w3.org/1999/xhtml">
 
-	<head>
-		<meta charset="UTF-8" />
-		<title>Bionovation 切片库</title> 
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
-		<link href="css/bootstrap.css" rel="stylesheet" />
-		<link href="css/mystyle.css" rel="stylesheet" type="text/css" />
-		<link rel="stylesheet" href="css/font-awesome.css" />
-		<script src="Scripts/jquery-1.9.1.min.js" type="text/javascript"></script>
-		<script src="Scripts/bootstrap.min.js" type="text/javascript"></script> 
-        <script>
-            //生成Pager，当前页码, 总页数, 回调function
-            $.fn.pager = function (page, total, callback) {
-                var html = '';
-                html += '<a class="first" href="javascript:;">首页</a>';
-                html += '<a class="first" href="javascript:;">上一页</a>';
-                var start = page - 5 < 0 ? 0 : page - 5;
-                var end = page + 5 < total ? page + 5 : total;
-                for (var i = start; i < end; i++) {
-                    html += i == page - 1 ? '<span>' + (i + 1) + '</span>' : '<a href="javascript:;">' + (i + 1) + '</a>';
-                }
-                html += '<a class="first" href="javascript:;">下一页</a>';
-                html += '<a class="last" href="javascript:;">末页</a>';
-                $(this).html(html).find('a').click(function () {
-                    var p = $(this).text();
-                    if (p == '上一页') p = page == 1 ? 1 : page - 1;
-                    if (p == '下一页') p = page == total ? total : page + 1;
-                    if (p == '首页') p = 1;
-                    if (p == '末页') p = total;
-
-                    if (p != page) callback(parseInt(p));
-                });
+<head>
+    <meta charset="UTF-8" />
+    <title>Bionovation 切片库</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+    <link href="css/bootstrap.css" rel="stylesheet" />
+    <link href="css/mystyle.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="css/font-awesome.css" />
+    <script src="Scripts/jquery-1.9.1.min.js" type="text/javascript"></script>
+    <script src="Scripts/bootstrap.min.js" type="text/javascript"></script>
+    <script>
+        //生成Pager，当前页码, 总页数, 回调function
+        $.fn.pager = function (page, total, callback) {
+            var html = '';
+            html += '<a class="first" href="javascript:;">首页</a>';
+            html += '<a class="first" href="javascript:;">上一页</a>';
+            var start = page - 5 < 0 ? 0 : page - 5;
+            var end = page + 5 < total ? page + 5 : total;
+            for (var i = start; i < end; i++) {
+                html += i == page - 1 ? '<span>' + (i + 1) + '</span>' : '<a href="javascript:;">' + (i + 1) + '</a>';
             }
+            html += '<a class="first" href="javascript:;">下一页</a>';
+            html += '<a class="last" href="javascript:;">末页</a>';
+            $(this).html(html).find('a').click(function () {
+                var p = $(this).text();
+                if (p == '上一页') p = page == 1 ? 1 : page - 1;
+                if (p == '下一页') p = page == total ? total : page + 1;
+                if (p == '首页') p = 1;
+                if (p == '末页') p = total;
 
-        </script>
-    <script type="text/javascript" src='js/config.js'></script>  
-	</head> 
-    <body>
-        <nav class="navbar navbar-default navbar-fixed-top" role="navigation" id="not_pc_navbar">
-            <a class="navbar-brand" href="#" style="background-color: #0099ff;color: White; font-size: 18px;width:100%;float:right;">
-                Bionovation 切片库
-                <span id="not_pc_notloggedin" style="color: White; font-size: 12px;float:right;margin-right: 15px;" class="show">登录</span>
-                <span id="not_pc_loggedin" style="color: White; font-size: 12px;float:right;margin-right: 15px;" class="hidden"></span>
-            </a>
-        </nav>
-        <div class="container" id="pc_slidelist_content">
-            <div class="row" style="margin-top: 55px;" id="slidelist"></div>
-            <div class="row" style="margin-top: 5px;">
-                <div class="col-md-12 ">
-                    <table class="table table-hover" style="width: 100%;" id="slidelisttb">
-                        <thead>
-                            <tr>
-                                <th width="20px">#</th>
-                                <th width="235px">缩略图</th>
-                                <th width="80px"></th>
-                                <th width="80px"></th>
-                                <th width="40%">扫描时间</th>
-                                <th width="100px"></th>
-                            </tr>
-                        </thead>
-                        <tbody style="background: white" id="slidelist2"></tbody>
-                    </table>
+                if (p != page) callback(parseInt(p));
+            });
+        }
+
+    </script>
+    <script type="text/javascript" src='js/config.js'></script>
+</head>
+<body>
+    <nav class="navbar navbar-default navbar-fixed-top" role="navigation" id="not_pc_navbar">
+        <a class="navbar-brand" href="#" style="background-color: #0099ff;color: White; font-size: 18px;width:100%;float:right;">
+            Bionovation 切片库
+            <span id="not_pc_notloggedin" style="color: White; font-size: 12px;float:right;margin-right: 15px;" class="show">登录</span>
+            <span id="not_pc_loggedin" style="color: White; font-size: 12px;float:right;margin-right: 15px;" class="hidden"></span>
+        </a>
+    </nav>
+    <div class="container" id="pc_slidelist_content">
+        <div class="row" style="margin-top: 55px;" id="slidelist"></div>
+        <div class="row" style="margin-top: 5px;">
+            <div class="col-md-12 ">
+                <table class="table table-hover" style="width: 100%;" id="slidelisttb">
+                    <thead>
+                        <tr>
+                            <th width="20px">#</th>
+                            <th width="235px">缩略图</th>
+                            <th width="80px">文件大小</th>
+                            <th width="80px">扫描镜头</th>
+                            <th width="80px">扫描耗时</th>
+                            <th width="80px">图片大小</th>
+                            <th width="30%">扫描时间</th>
+                            <th width="100px"></th>
+                        </tr>
+                    </thead>
+                    <tbody style="background: white" id="slidelist2"></tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 ">
+                <div align="center" id="pagination_box">
+                    <ul id="visible-pages" style="height: 25px"></ul>
+                </div>
+                <div style="text-align:center">
+                    <div class="pager"></div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-12 ">
-                    <div align="center" id="pagination_box">
-                        <ul id="visible-pages" style="height: 25px"></ul>
-                    </div>
-                    <div style="text-align:center">
-                        <div class="pager"></div>
-                    </div>
-                </div>
-                <div class="container large">
-                    <div class="pagination">
-                        <ul id="pagination"></ul>
-                    </div>
-                </div>
-            </div>
-            <!--<div class="container large">
+            <div class="container large">
                 <div class="pagination">
                     <ul id="pagination"></ul>
                 </div>
-            </div>-->
-        </div>
-        </div>
-        <div class="footer">
-            <div class="container">
-                <p style="color: #666;"></p>
             </div>
         </div>
+        <!--<div class="container large">
+            <div class="pagination">
+                <ul id="pagination"></ul>
+            </div>
+        </div>-->
+    </div> 
+    <div class="footer">
+        <div class="container">
+            <p style="color: #666;"></p>
+        </div>
+    </div>
 
 
-        <script>
-            var count = 8;//每页8片
-            var index = 0;//第几个
-            var allPageNum = 0;
-            function browseSample(pathImg) {
-                var path = "./sample.html";
-                window.open(path + "?samplePath=" + pathImg);
-            }
-            $(function () {
-                ShowListInfo(1);
+    <script>
+        var count = 8;//每页8片
+        var index = 0;//第几个
+        var allPageNum = 0;
+        function browseSample(pathImg) {
+            var path = "./sample.html";
+            window.open(path + "?samplePath=" + pathImg);
+        }
+        $(function () {
+            ShowListInfo(1);
+        });
+
+        //用用回调
+        function go(p) {
+            index = (p - 1) * count;
+            ShowListInfo(p);
+        }
+
+        function ShowListInfo(p) {
+            var url = config.host + "/slides?index=" + index + "&count=" + count;
+            $.get(url, function (data, status) {
+                if (status == "success" && data.code == 200) {
+                    ShowHtml(data.data.slides);
+                    allPageNum = Math.ceil(data.data.total / count);
+                    $('.pager').pager(p, allPageNum, go);
+                    // ShowFooter(data.data);
+                } else {
+                    console.error("failed. ")
+                }
             });
+        }
+        function GetContentByIndex(jumpIndex) {
+            index = jumpIndex;
+            ShowListInfo();
+        }
 
-            //用用回调
-            function go(p) {
-                index = (p - 1) * count;
-                ShowListInfo(p);
+        function ShowHtml(list) {
+            $("#slidelist2").html("");
+            var num = index + 1;
+            // list = ["D:\\BioScan\\2019-07-30-18-25-32", "D:\\BioScan\\2019-07-29-16-28-49","D:\\BioScan\\2019-07-22-10-14-49"];
+            for (var i = 0; i < list.length; i++) {
+                var path = list[i];
+                var fileName = getFileName(path);
+                var html = "<tr onclick='browseSample(\"" + encodeURI(path) + "\")'>";
+                html += "<td style='color:#428bca; font-size:16px'>" + num + "</td>";
+                html += "<td> <div class='col-md-12 ' style=' width:238px'>";
+                html += "<div  class='thumbnail' style='margin-bottom:0px;text-align: center'><img id='thumbnail_" + i + "' src='img/grey.jpg' style='height: 106px; max-width:100px;'></div> </div> </td>";
+                html += "<td> <div id='filesize_" + i + "' ></div></td>";
+                html += "<td> <div id='mag_" + i + "' ></div></td>";
+                html += "<td> <div id='timeuse_" + i + "' ></div></td>";
+                html += "<td> <div id='size_" + i + "' ></div></td>";
+
+                html += "<td>" + fileName + "</td> ";
+                html += " <td style=' font-size:14px; padding:4px'>  <a onclick='browseSample(\"" + encodeURI(path) + "\")' target='_blank'><i class='fa fa-eye' aria-hidden='true'></i>浏览(100)</a></td> </tr>";
+                $("#slidelist2").append(html);
+                num++;
+            }
+            for (var i = list.length - 1; i >= 0; i--) {
+                var path = list[i];
+                var picSrcPath = config.host + "/slidenail?path=" + path;
+                loadImage('thumbnail_' + i, picSrcPath, loadResult);
+                LoadSlideinfo(i, path);
             }
 
-            function ShowListInfo(p) {
-                var url = config.host + "/slides?index=" + index + "&count=" + count;
-                $.get(url, function (data, status) {
-                    if (status == "success" && data.code == 200) {
-                        ShowHtml(data.data.slides);
-                        allPageNum = Math.ceil(data.data.total / count);
-                        $('.pager').pager(p, allPageNum, go);
-                       // ShowFooter(data.data);
-                    } else {
-                        console.error("failed. ")
-                    }
-               });
-            }
-            function GetContentByIndex(jumpIndex) {
-                index = jumpIndex;
-                ShowListInfo();
-            }
-          
-            function ShowHtml(list) {
-                $("#slidelist2").html("");
-                var num = index+1;
-                // list = ["D:\\BioScan\\2019-07-30-18-25-32", "D:\\BioScan\\2019-07-29-16-28-49","D:\\BioScan\\2019-07-22-10-14-49"];
-                for (var i = 0; i < list.length; i++) {
-                    var path = list[i];
-                    var fileName = getFileName(path);
-                    var html = "<tr onclick='browseSample(\"" + encodeURI(path) + "\")'>";
-                    html += "<td style='color:#428bca; font-size:16px'>" + num + "</td>";
-                    html += "<td> <div class='col-md-12 ' style=' width:238px'>";
-                    html += "<div  class='thumbnail' style='margin-bottom:0px;text-align: center'><img id='thumbnail_" + i + "' src='img/grey.jpg' style='height: 106px; max-width:100px;'></div> </div> </td>";
-                    html += "<td></td>  <td> </td> ";
-                    html += "<td>" + fileName + "</td> ";
-                    html += " <td style=' font-size:14px; padding:4px'>  <a onclick='browseSample(\"" + encodeURI(path) + "\")' target='_blank'><i class='fa fa-eye' aria-hidden='true'></i>浏览(100)</a></td> </tr>";
-                    $("#slidelist2").append(html);
-                    num++;
+        }
+
+        function isUndefined(variable) {
+            return typeof variable == 'undefined' ? true : false;
+        }
+        function LoadSlideinfo(i, path) {
+            var url = config.host + "/slideinfo?path=" + path;
+            $.get(url, function (data, status) {
+                if (status == "success") {
+                    document.getElementById('filesize_' + i).innerHTML = isUndefined(data.FileSizeD) ? "" : data.FileSizeD+ "GB";
+                    document.getElementById('mag_' + i).innerHTML = isUndefined(data.SourceLens) ? "" : data.SourceLens + "x";
+                    document.getElementById('timeuse_' + i).innerHTML = isUndefined(data.ScanTime) ? "" : data.ScanTime+ "s";
+                    document.getElementById('size_' + i).innerHTML = data.PhysicalWidth + "x" + data.PhysicalHeight;
+
+                } else {
+                    alert("failed.");
                 }
-                for (var i = list.length - 1; i >= 0; i--) {
-                    var path = list[i];
-                    var picSrcPath = config.host + "/slidenail?path=" + path;
-                    loadImage('thumbnail_' + i, picSrcPath, loadResult);
+
+            });
+        }
+
+        function getFileName(file) {
+            return file.substring(file.lastIndexOf("\\") + 1);
+        }
+
+
+        function loadImage(id, src, callback) {
+            var imgloader = new window.Image();
+            //当图片成功加载到浏览器缓存
+            imgloader.onload = function (evt) {
+                if (typeof (imgloader.readyState) == 'undefined') {
+                    imgloader.readyState = 'undefined';
                 }
+                //在IE8以及以下版本中需要判断readyState而不是complete
+                if ((imgloader.readyState == 'complete' || imgloader.readyState == "loaded") || imgloader.complete) {
+                    //console.log('width='+imgloader.width+',height='+imageloader.height);//读取原始图片大小
+                    callback({ 'msg': 'ok', 'src': src, 'id': id });
+                } else {
+                    imgloader.onreadystatechange(evt);
+                }
+            };
 
-            }
-            function getFileName(file) {
-                return file.substring(file.lastIndexOf("\\") + 1);
-            }
+            imgloader.onerror = function (evt) {
+                callback({ 'msg': 'error', 'id': id });
+            };
 
+            imgloader.onreadystatechange = function (e) {
+                //此方法只有IE8以及一下版本会调用
+            };
+            imgloader.src = src;
+        }
 
-            function loadImage(id, src, callback) {
-                var imgloader = new window.Image();
-                //当图片成功加载到浏览器缓存
-                imgloader.onload = function (evt) {
-                    if (typeof (imgloader.readyState) == 'undefined') {
-                        imgloader.readyState = 'undefined';
+        var loadResult = function (data) {
+            data = data || {};
+            if (typeof (data.msg) != 'undefined') {
+                if (data.msg == 'ok') {
+                    //这里使用了id获取元素，有点死板，建议读者自行扩展为css 选择符
+                    if (document.getElementById('' + data.id)) {
+                        document.getElementById('' + data.id).src = data.src;
                     }
-                    //在IE8以及以下版本中需要判断readyState而不是complete
-                    if ((imgloader.readyState == 'complete' || imgloader.readyState == "loaded") || imgloader.complete) {
-                        //console.log('width='+imgloader.width+',height='+imageloader.height);//读取原始图片大小
-                        callback({ 'msg': 'ok', 'src': src, 'id': id });
-                    } else {
-                        imgloader.onreadystatechange(evt);
-                    }
-                };
 
-                imgloader.onerror = function (evt) {
-                    callback({ 'msg': 'error', 'id': id });
-                };
-
-                imgloader.onreadystatechange = function (e) {
-                    //此方法只有IE8以及一下版本会调用
-                };
-                imgloader.src = src;
-            }
-
-            var loadResult = function (data) {
-                data = data || {};
-                if (typeof (data.msg) != 'undefined') {
-                    if (data.msg == 'ok') {
-                        //这里使用了id获取元素，有点死板，建议读者自行扩展为css 选择符
-                        if (document.getElementById('' + data.id)) {
-                            document.getElementById('' + data.id).src = data.src;
-                        }
-
-                    } else {
-                        //这里图片加载失败，我们可以显示其他图片，防止大红叉
-                        if (document.getElementById('' + data.id)) {
-                            document.getElementById('' + data.id).src = 'img/unload.jpg';
-                        }
+                } else {
+                    //这里图片加载失败，我们可以显示其他图片，防止大红叉
+                    if (document.getElementById('' + data.id)) {
+                        document.getElementById('' + data.id).src = 'img/unload.jpg';
                     }
                 }
             }
-        </script>
-    </body>
+        }
+    </script>
+</body>
 
 </html>

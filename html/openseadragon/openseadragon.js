@@ -7126,6 +7126,7 @@ $.Viewer = function( options ) {
         delete options.config;
     }
 
+   
     //Public properties
     //Allow the options object to override global defaults
     $.extend( true, this, {
@@ -7222,10 +7223,9 @@ $.Viewer = function( options ) {
         buttons:        null,
 
         //TODO: this is defunct so safely remove it
-        profiler:       null
-
+        profiler: null 
     }, $.DEFAULT_SETTINGS, options );
-
+    this.slideinfo = options.slideInfo;
     if ( typeof ( this.hash) === "undefined" ) {
         throw new Error("A hash must be defined, either by specifying options.id or options.hash.");
     }
@@ -7278,7 +7278,6 @@ $.Viewer = function( options ) {
 
     this.element              = this.element || document.getElementById( this.id );
     this.canvas               = $.makeNeutralElement( "div" );
-
     this.canvas.className = "openseadragon-canvas";
     (function( style ){
         style.width    = "100%";
@@ -7416,7 +7415,9 @@ $.Viewer = function( options ) {
         homeFillsViewer:    this.homeFillsViewer,
         margins:            this.viewportMargins
     });
-
+    //function zoomtoscale(scale) {
+    //    this.viewport.zoomBy(1.1);
+    //}
     this.viewport._setContentBounds(this.world.getHomeBounds(), this.world.getContentFactor());
 
     // Create the image loader
@@ -9540,7 +9541,10 @@ function onFocus(){
 function onBlur(){
     beginControlsAutoHide( this );
 
-}
+    }
+
+
+
 
 function onCanvasKeyDown( event ) {
     var canvasKeyDownEventArgs = {
@@ -18974,6 +18978,18 @@ $.Viewport.prototype = {
             this.zoomSpring.target.value * factor, refPoint, immediately);
     },
 
+    zoomtoscale: function (scale) {
+        debugger;
+   
+       var zoom11 = this._contentSize.x / this._containerInnerSize.x;
+        var zoomValue = scale / this.viewer.slideInfo.SourceLens * zoom11;
+        //console.log(scale);
+        //console.log(viewer.slideInfo.SourceLens);
+        //console.log(zoom11);
+        //console.log(zoomValue);
+        return this.zoomTo(zoomValue);
+    },
+     
     /**
      * Zooms to the specified zoom level
      * @function

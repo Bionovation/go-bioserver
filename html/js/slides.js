@@ -21,29 +21,29 @@ function createList(imglist)
 	}
 }
 
-function createViewer(host, path, w, h) {
-    viewer = OpenSeadragon({
-        id:            "openseadragon1",
-        prefixUrl:     "/openseadragon/images/",
-        navigatorSizeRatio: 0.2,
-        wrapHorizontal:     false,
-		showNavigator:  true, 
-		springStiffness: 10,
-        tileSources:   {
-            height: h,
-            width:  w,
-            tileSize: 256,
-            minLevel: 8,
-            getTileUrl: function( level, x, y ){
-                return host + "/slidetile?" + 
-                "path=" + path + 
-                "&level="+(level-8)+
-                "&x="+x+
-                "&y="+y;
-            }
-        }
-    });
-}
+//function createViewer(host, path, w, h) {
+//    viewer = OpenSeadragon({
+//        id:            "openseadragon1",
+//        prefixUrl:     "/openseadragon/images/",
+//        navigatorSizeRatio: 0.2,
+//        wrapHorizontal:     false,
+//		showNavigator:  true, 
+//		springStiffness: 10,
+//        tileSources:   {
+//            height: h,
+//            width:  w,
+//            tileSize: 256,
+//            minLevel: 8,
+//            getTileUrl: function( level, x, y ){
+//                return host + "/slidetile?" + 
+//                "path=" + path + 
+//                "&level="+(level-8)+
+//                "&x="+x+
+//                "&y="+y;
+//            }
+//        }
+//    });
+//}
 
 function Init() {
     var url = config.host + "/slides"; 

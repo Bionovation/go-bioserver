@@ -3,7 +3,10 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"net/http"
+	"os"
+	"path/filepath"
 	"strconv"
 
 	"github.com/Bionovation/go-bioserver/cgo"
@@ -87,32 +90,58 @@ func handleSlideList(c *gin.Context) {
 }
 
 func handleSlideInfo(c *gin.Context) {
-	type SlideInfo struct {
-		Levels   int     `json:"levels"`
-		Width    int     `json:"width"`
-		Height   int     `json:"height"`
-		FileSize float32 `json:"filesize"`
-		Mag      int     `json:"mag"`
-		TimeUse  float32 `json:"timeuse"`
-	}
-
 	path := c.Query("path")
 	fmt.Println(path)
-	info, err := cgo.SlideInfo(path)
+
+	res := NewRes()
+	infoPath := filepath.Join(path, "slideinfo.bic")
+
+	fp, err := os.Open(infoPath)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, err)
+		fmt.Println(err)
+		res.FailErr(c, err)
 		return
 	}
+	defer fp.Close()
+
+	var s []byte
+	if s, err = ioutil.ReadAll(fp); err != nil {
+		fmt.Println(err)
+		res.FailErr(c, err)
+		return
+	}
+
+	/*type SlideInfo struct {
+		Levels     int     `json:"Levels"`
+		Width      int     `json:"PhysicalWidth"`
+		Height     int     `json:"PhysicalHeight"`
+		Mag        float32 `json:"SourceLens"`
+		TimeUse    float32 `json:"ScanTime"`
+		Lens       string  `json:"SourceLensStr"`
+		FileSize   string
+		CellCount  int
+		CreateTime time.Time
+	}
+
 	tinfo := SlideInfo{}
-	err = json.Unmarshal([]byte(info), &tinfo)
+	err = json.Unmarshal(s, &tinfo)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, err)
+		res.FailErr(c, err)
 		return
 	}
 
-	bioGC.Visit(path) // gc
+	res.DoneData(c, tinfo)*/
 
-	c.JSON(http.StatusOK, tinfo)
+	c.Data(http.StatusOK, "application/json", s)
+
+	/*var d map[string]interface{}
+	if err := json.Unmarshal(s, &d); err != nil {
+		res.FailErr(c, err)
+		return
+	}
+
+	res.DoneData(c, d)*/
+
 }
 
 // 读取瓦片
@@ -152,4 +181,16 @@ func handleLua(c *gin.Context) {
 	defer l.Close()
 	l.DoFile("./test.lua")
 	c.String(http.StatusOK, "ok")
+}
+
+func handleTest(c *gin.Context) {
+	res := NewRes()
+	str := `{"name":"gray"}`
+	var d map[string]interface{}
+	if err := json.Unmarshal([]byte(str), &d); err != nil {
+		res.FailErr(c, err)
+		return
+	}
+
+	res.DoneData(c, d)
 }

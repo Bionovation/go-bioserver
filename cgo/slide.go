@@ -8,7 +8,6 @@ package cgo
 import "C"
 import (
 	"fmt"
-	"os"
 	"unsafe"
 )
 
@@ -29,7 +28,7 @@ func SlideTile(path string, level, x, y int) ([]byte, error) {
 }
 
 // 玻片信息
-func SlideInfo(path string) (string, error) {
+/*func SlideInfo(path string) (string, error) {
 	cpath := C.CString(path)
 	defer C.free(unsafe.Pointer(cpath))
 
@@ -52,7 +51,7 @@ func SlideInfo(path string) (string, error) {
 	// }
 	// defer inputFile.Close()
 
-}
+}*/
 
 // 获取缩略图
 func SlideNail(path string) ([]byte, error) {

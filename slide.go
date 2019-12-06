@@ -9,9 +9,17 @@ import (
 )
 
 type Slide struct {
-	path string
-	size int
-	time time.Time
+	Levels  int     `json:"levels"`
+	Width   int     `json:"width"`
+	Height  int     `json:"height"`
+	Mag     int     `json:"mag"`
+	TimeUse float32 `json:"timeuse"`
+
+	FileSize   string
+	Version    string
+	ScanFolder string
+	CellCount  int
+	CreateTime time.Time
 }
 
 func SlideList(folder string) ([]string, error) {

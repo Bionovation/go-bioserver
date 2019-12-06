@@ -1,6 +1,6 @@
 var viewer = null;
 
-function createViewer(host,path, w, h) {
+function createViewer(host,path,data) {
     viewer = OpenSeadragon({
         id:            "contentDiv",
         prefixUrl:     "/openseadragon/images/",
@@ -8,10 +8,11 @@ function createViewer(host,path, w, h) {
         wrapHorizontal:     false,
 		showNavigator:  true, 
         minScrollDeltaTime: 25,
-        maxZoomPixelRatio:2.0,
-        tileSources:   {
-            height: h,
-            width:  w,
+        maxZoomPixelRatio: 2.0,
+        slideInfo: data,
+        tileSources: {
+            height: data.PhysicalHeight,
+            width: data.PhysicalWidth,
             tileSize: 256,
             minLevel: 8,
             getTileUrl: function( level, x, y ){
@@ -42,7 +43,7 @@ function Init(path) {
     var url = config.host + "/slideinfo?path="+path; 
     $.get(url,function(data,status){
         if(status == "success"){
-            createViewer(config.host, path, data.width, data.height);
+            createViewer(config.host, path, data);
         }else{
             alert("failed.");
         }
