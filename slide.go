@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -37,10 +38,15 @@ func SlideList(folder string) ([]string, error) {
 		fp := filepath.Join(folder, fi.Name())
 		fn := filepath.Join(fp, "data.bimg")
 		fn2 := filepath.Join(fp, "downlayer.bimg")
+		fn3 := filepath.Join(fp, "slideinfo.bic")
+		fn4 := filepath.Join(fp, fmt.Sprintf("%v.bic", fi.Name()))
 		if finfo, err := os.Stat(fn); !os.IsNotExist(err) {
 			if _, err = os.Stat(fn2); !os.IsNotExist(err) {
-				//sl = append(sl, fp)
-				m[finfo.ModTime().String()] = fp
+				if _, err = os.Stat(fn3); !os.IsNotExist(err) {
+					m[finfo.ModTime().String()] = fp
+				} else if _, err = os.Stat(fn4); !os.IsNotExist(err) {
+					m[finfo.ModTime().String()] = fp
+				}
 			}
 		}
 	}

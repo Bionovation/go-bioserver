@@ -95,6 +95,10 @@ func handleSlideInfo(c *gin.Context) {
 
 	res := NewRes()
 	infoPath := filepath.Join(path, "slideinfo.bic")
+	if _, err := os.Stat(infoPath); os.IsNotExist(err) {
+		_, subfolder := filepath.Split(path)
+		infoPath = filepath.Join(path, fmt.Sprintf("%v.bic", subfolder))
+	}
 
 	fp, err := os.Open(infoPath)
 	if err != nil {
