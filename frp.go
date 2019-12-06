@@ -62,8 +62,8 @@ func isProcessExist(appName string) (bool, string, int) {
 	//fmt.Printf("fields: %v\n", output)
 	n := strings.Index(string(output), "System")
 	if n == -1 {
-		fmt.Println("no find")
-		os.Exit(1)
+		fmt.Println("not find cmd window")
+		return false, appName, -1
 	}
 	data := string(output)[n:]
 	fields := strings.Fields(data)

@@ -69,7 +69,8 @@ func clearRoutine(gc *SlideGC) error {
 
 	for {
 		//fmt.Println("gc start running")
-		gc.Clear(30)
-		time.Sleep(time.Duration(1) * time.Second) // 每秒执行一次
+		// gc.Clear(30)
+		time.Sleep(time.Duration(11) * time.Second) // 每11秒执行一次
+		log.Println("Im still alive~")
 	}
 }

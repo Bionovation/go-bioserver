@@ -97,3 +97,34 @@ body {
 .select .select-result a:hover {
 	background-position: right -15px
 }
+
+.pager {
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    border: 1px solid #dddddd;
+    border-radius: 3px;
+    display: inline-block;
+    clear: both;
+}
+
+    .pager a, .pager span {
+        font-size: 14px;
+        color: #428bca;
+        border-right: 1px solid #dddddd;
+        padding: 4px 9px;
+        float: left;
+        text-decoration: none;
+    }
+
+    .pager span {
+        color: #fff;
+        background: #428bca;
+    }
+
+    .pager a:hover {
+        color: #2a6496;
+        background: #f2f2f2;
+    }
+
+    .pager a.last {
+        border-right: 0;
+    }

@@ -27,7 +27,7 @@ func stdToFile() {
 
 func main() {
 	// 重定向标准输出到文件
-	stdToFile()
+	//stdToFile()
 	bioConfig.readConfig(cfile) // 读取配置文件
 	go frpLogin()               // 登录frp代理服务
 	go clearRoutine(nil)        // 运行内存清理线程

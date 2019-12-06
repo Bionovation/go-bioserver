@@ -7,7 +7,8 @@ function createViewer(host,path, w, h) {
         navigatorSizeRatio: 0.2,
         wrapHorizontal:     false,
 		showNavigator:  true, 
-		minScrollDeltaTime: 25,
+        minScrollDeltaTime: 25,
+        maxZoomPixelRatio:2.0,
         tileSources:   {
             height: h,
             width:  w,

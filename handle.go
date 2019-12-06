@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"strconv"
 
@@ -87,12 +88,16 @@ func handleSlideList(c *gin.Context) {
 
 func handleSlideInfo(c *gin.Context) {
 	type SlideInfo struct {
-		Levels int `json:"levels"`
-		Width  int `json:"width"`
-		Height int `json:"height"`
+		Levels   int     `json:"levels"`
+		Width    int     `json:"width"`
+		Height   int     `json:"height"`
+		FileSize float32 `json:"filesize"`
+		Mag      int     `json:"mag"`
+		TimeUse  float32 `json:"timeuse"`
 	}
 
 	path := c.Query("path")
+	fmt.Println(path)
 	info, err := cgo.SlideInfo(path)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, err)
