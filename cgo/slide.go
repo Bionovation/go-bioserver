@@ -7,6 +7,7 @@ package cgo
 */
 import "C"
 import (
+	"encoding/json"
 	"fmt"
 	"unsafe"
 )
@@ -52,6 +53,35 @@ func SlideTile(path string, level, x, y int) ([]byte, error) {
 	// defer inputFile.Close()
 
 }*/
+
+func SlideWidthHeight(path string) (int, int, error) {
+	cpath := C.CString(path)
+	defer C.free(unsafe.Pointer(cpath))
+
+	type Info struct {
+		Width  int `json:"width"`
+		Height int `json:"height"`
+	}
+
+	b := make([]byte, 1024*1024)
+	cinfo := (*C.char)(unsafe.Pointer(&b[0]))
+	sz := C.ReadSlideInfo(cpath, cinfo)
+
+	ginfo := C.GoString(cinfo)
+
+	if sz < 0 || ginfo == "" {
+		return 0, 0, fmt.Errorf("read slide info failed.")
+	}
+
+	info := Info{}
+	if err := json.Unmarshal([]byte(ginfo), &info); err != nil {
+		return 0, 0, fmt.Errorf("unmarshal slideinfo failed.")
+	}
+
+	fmt.Println(info.Width, info.Height)
+
+	return info.Width, info.Height, nil
+}
 
 // 获取缩略图
 func SlideNail(path string) ([]byte, error) {

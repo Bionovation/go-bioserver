@@ -115,37 +115,26 @@ func handleSlideInfo(c *gin.Context) {
 		return
 	}
 
-	/*type SlideInfo struct {
-		Levels     int     `json:"Levels"`
-		Width      int     `json:"PhysicalWidth"`
-		Height     int     `json:"PhysicalHeight"`
-		Mag        float32 `json:"SourceLens"`
-		TimeUse    float32 `json:"ScanTime"`
-		Lens       string  `json:"SourceLensStr"`
-		FileSize   string
-		CellCount  int
-		CreateTime time.Time
-	}
-
-	tinfo := SlideInfo{}
-	err = json.Unmarshal(s, &tinfo)
-	if err != nil {
-		res.FailErr(c, err)
-		return
-	}
-
-	res.DoneData(c, tinfo)*/
-
-	c.Data(http.StatusOK, "application/json", s)
-
-	/*var d map[string]interface{}
+	var d map[string]interface{}
 	if err := json.Unmarshal(s, &d); err != nil {
 		res.FailErr(c, err)
 		return
 	}
 
-	res.DoneData(c, d)*/
+	if d["PhysicalWidth"] == float64(0) {
+		bioGC.Visit(path)
+		var w, h int
+		var err error
+		if w, h, err = cgo.SlideWidthHeight(path); err == nil {
+			d["PhysicalWidth"] = w
+			d["PhysicalHeight"] = h
+		} else {
+			fmt.Println("SlideWidthHeight:", err)
+		}
+	}
 
+	//res.DoneData(c, d)
+	c.JSON(http.StatusOK, d)
 }
 
 // 读取瓦片
