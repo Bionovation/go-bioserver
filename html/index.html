@@ -168,7 +168,7 @@
             var url = config.host + "/slideinfo?path=" + path;
             $.get(url, function (data, status) {
                 if (status == "success") {
-                    document.getElementById('filesize_' + i).innerHTML = isUndefined(data.FileSizeD) ? "" : data.FileSizeD+ "GB";
+                    document.getElementById('filesize_' + i).innerHTML = isUndefined(data.FileSizeD) ? "" : data.FileSizeD.toFixed(1)+ "GB";
                     document.getElementById('mag_' + i).innerHTML = isUndefined(data.SourceLens) ? "" : data.SourceLens + "x";
                     document.getElementById('timeuse_' + i).innerHTML = isUndefined(data.ScanTime) ? "" : data.ScanTime+ "s";
                     document.getElementById('size_' + i).innerHTML = data.PhysicalWidth + "x" + data.PhysicalHeight;

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8" />
     <title>Bionovation Slide</title>
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
     <script type="text/javascript" src='openseadragon/openseadragon.js'></script>
@@ -34,7 +35,6 @@
         $(function () {
             var samplePath = getQueryString("samplePath");
             Init(samplePath);
-            sliderInit();
         });
 
         function getQueryString(name) {
@@ -44,58 +44,70 @@
             return null;
         }
 
-        function sliderInit() {
-            $(".slider")
-                .slider({
-                    min: 0,
-                    max: 80,
-                    step:1,
-                    value: 3,
-                    orientation: "vertical"
-                })
-                .slider("pips", {
-                    //rest: "label"
-                    rest: false
-                })
-                .slider("float", {
-                    suffix: "x"
-                });
-        }
         function zoombl(val) {
-            $("#vertical-slider").slider("value", val);
-            viewer.viewport.zoomtoscale(val);
-            //console.log(val);
+            //$("#vertical-slider").slider("value", val);
+            //sliderChange();
+            zoomScale(val);
         }
         function zoomFit() {
-            $("#vertical-slider").val(3);
+            //$("#vertical-slider").val(3);
         }
         function zoomOut() {
-
+            var val = $("#vertical-slider").slider("value");
+            //$("#vertical-slider").slider("value", val + 5);
+            zoomScale(val+5);
         }
+        function zoomIn() {
+            var val = $("#vertical-slider").slider("value")-5;
+            //$("#vertical-slider").slider("value", val - 5);
+            //sliderChange();
+            if (val<2) {
+                val=2;
+            }
+            zoomScale(val);
+        }
+        function mousedown() {
+            sliderChange();
+        }
+        function mousemove() {
+            sliderChange();
+        }
+        function mouseup() {
+            console.log(99);
+            sliderChange();
+        }
+
+        function zoomScale(value) {
+            viewer.viewport.zoomtoscale(value);
+        }
+
+        function sliderChange() {
+            //var val = $("#vertical-slider").slider("value");
+            //viewer.viewport.zoomtoscale(val);
+        } 
     </script>
 
 </head>
 <body>
     <div id="contentDiv" class="openseadragon1"></div>
 
-
+    <!-- /ÔÄÆ¬ -->
+    <!--<div class="keyControl" style="display: block;">
+        <div class="keywards keywardsgo" id="keyup" onclick="gotomove(38)"><span style="font-size: 20px; color: white; -webkit-user-select: none;">¡ü</span></div>
+        <div class="keywards keywardsgo" id="keyleft" onclick="gotomove(37)"><span style="font-size: 20px; color: white; -webkit-user-select: none;">¡û</span></div>
+        <div class="keywards keywardsgo" id="keydown" onclick="gotomove(40)"><span style="font-size: 20px; color: white; -webkit-user-select: none;">¡ý</span></div>
+        <div class="keywards keywardsgo" id="keyright" onclick="gotomove(39)"><span style="font-size: 20px; color: white; -webkit-user-select: none;">¡ú</span></div>
+    </div>-->
     <div id="vertical-slider-result" style="position: absolute; bottom: 60px; left: 80px;">
         <div class="addbutton" onclick="zoomOut()">+</div>
-
-        <div class="blx2" style="top: -10px; display: none; color: rgb(0, 0, 0);" id="xbl">0.77</div>
-        <div class="blx hidden" data-bl="80" style="top: 15px" onclick="zoombl(80)">80x</div>
-        <div class="blx" data-bl="40" style="top: 15px;" onclick="zoombl(40)">40x</div>
-        <div class="blx" data-bl="20" style="top: 45px;" onclick="zoombl(20)">20x</div>
-        <div class="blx" data-bl="10" style="top: 75px;" onclick="zoombl(10)">10x</div>
-        <div class="blx" data-bl="4" style="top: 105px;" onclick="zoombl(4)">4x</div>
-        <div class="blx" data-bl="2" style="top: 135px;" onclick="zoombl(2)">2x</div>
-        <div class="blx" data-bl="" style="top: 165px;" onclick="zoomFit()">Fit</div>
-
-        <div id="vertical-slider" class="slider">
-        </div>
-
+        <!--<div class="blx2" style="top: -10px; display: none; color: rgb(0, 0, 0);" id="xbl">0.77</div>-->
+        <div class="blx"   style="top: 15px;" onclick="zoombl(100)">100x</div>
+        <div class="blx"  style="top: 45px;" onclick="zoombl(80)">80x</div>
+        <div class="blx"   style="top: 75px;" onclick="zoombl(60)">60x</div>
+        <div id="blx1" class="blx"  style="top: 105px;" onclick="zoombl(40)">40x</div>
+        <div id="blx1" class="blx"  style="top: 135px;" onclick="zoombl(20)">20x</div>
+        <div id="vertical-slider" class="slider"  mouseup="mouseup()"></div>
         <div class="minbutton" onclick="zoomIn()">-</div>
-
     </div>
 
 </body>

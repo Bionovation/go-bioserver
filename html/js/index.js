@@ -8,8 +8,11 @@ function createViewer(host,path,data) {
         wrapHorizontal:     false,
 		showNavigator:  true, 
         minScrollDeltaTime: 25,
-        maxZoomPixelRatio: 2.0,
+        maxZoomPixelRatio: 5.0,
         slideInfo: data,
+        scrollWheelInSlider: function (scale) {
+            $("#vertical-slider").slider("value", parseInt(scale));  
+        },
         tileSources: {
             height: data.PhysicalHeight,
             width: data.PhysicalWidth,
@@ -23,26 +26,44 @@ function createViewer(host,path,data) {
                 "&y="+y;
             }
         }
-    });
+    }); 
+} 
+
+function sliderInit(_slideInfo) {
+    var SourceLens = _slideInfo.SourceLens;//viewer.viewport.
+    $(".slider")
+        .slider({
+            min: 2,
+            max: SourceLens*5,
+            step: 0.1,
+            value: 10,
+            orientation: "vertical"
+        })
+        .slider("pips", {
+            //rest: "label"
+            rest: false
+        })
+        .slider("float", {
+            suffix: "x"
+        })
+        .on("slidechange", function (e, ui) {
+            //console.log(e);
+            //console.log(ui);
+            //console.log(e.originalEvent);
+            if (typeof (e.originalEvent) != "undefined") {
+                viewer.viewport.zoomtoscale(ui.value);
+            }
+            //viewer.viewport.zoomtoscale(ui.value);
+        });
 }
 
-/* function Init(sampleId) {
-    var path = config.datas[sampleId];
-    var url = config.host + "/GetImageInfo?path="+path; 
-    $.get(url,function(data,status){
-        if(status == "success"){
-            createViewer(config.host, path, data.width, data.height);
-        }else{
-            alert("failed.");
-        }
-        
-  });
-} */
+
 
 function Init(path) {    
     var url = config.host + "/slideinfo?path="+path; 
     $.get(url,function(data,status){
-        if(status == "success"){
+        if (status == "success") {
+            sliderInit(data);
             createViewer(config.host, path, data);
         }else{
             alert("failed.");

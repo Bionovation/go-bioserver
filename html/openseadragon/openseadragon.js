@@ -3693,7 +3693,7 @@ $.EventSource.prototype = {
          * @param {Object} event.userData
          *      Arbitrary user-defined object.
          */
-        scrollHandler: function () { },
+        scrollHandler: function () {},
 
         /**
          * Implement or assign implementation to these handlers during or after
@@ -7226,6 +7226,8 @@ $.Viewer = function( options ) {
         profiler: null 
     }, $.DEFAULT_SETTINGS, options );
     this.slideinfo = options.slideInfo;
+    this.scrollWheelInSlider = options.scrollWheelInSlider;
+
     if ( typeof ( this.hash) === "undefined" ) {
         throw new Error("A hash must be defined, either by specifying options.id or options.hash.");
     }
@@ -10166,12 +10168,19 @@ function onCanvasScroll( event ) {
         if ( !event.preventDefaultAction && this.viewport ) {
             gestureSettings = this.gestureSettingsByDeviceType( event.pointerType );
             if ( gestureSettings.scrollToZoom ) {
-                factor = Math.pow( this.zoomPerScroll, event.scroll );
+                factor = Math.pow(this.zoomPerScroll, event.scroll);
+                var refPoint = gestureSettings.zoomToRefPoint ? this.viewport.pointFromPixel(event.position, true) : null;
                 this.viewport.zoomBy(
                     factor,
                     gestureSettings.zoomToRefPoint ? this.viewport.pointFromPixel( event.position, true ) : null
                 );
                 this.viewport.applyConstraints();
+                //scrollWheelInSlider
+                //var zoom11 = this.viewport._contentSize.x / this.viewport._containerInnerSize.x;
+                //var zoomToValue = this.viewport.zoomSpring.target.value * factor;
+                //var scale = (zoomToValue / zoom11) * this.slideInfo.SourceLens;
+                //this.scrollWheelInSlider(scale); 
+               //scrollWheelInSliderEnd
             }
         }
         /**
@@ -15736,7 +15745,7 @@ function loadPanels( strip, viewerSize, scroll ) {
         panelSize = strip.panelWidth;
     } else {
         panelSize = strip.panelHeight;
-    }
+    } 
     activePanelsStart = Math.ceil( viewerSize / panelSize ) + 5;
     activePanelsEnd = Math.ceil( ( Math.abs( scroll ) + viewerSize ) / panelSize ) + 1;
     activePanelsStart = activePanelsEnd - activePanelsStart;
@@ -18975,14 +18984,12 @@ $.Viewport.prototype = {
      */
     zoomBy: function(factor, refPoint, immediately) {
         return this.zoomTo(
-            this.zoomSpring.target.value * factor, refPoint, immediately);
+            this.zoomSpring.target.value * factor, refPoint, immediately); 
     },
 
-    zoomtoscale: function (scale) {
-        debugger;
-   
+    zoomtoscale: function (scale) { 
        var zoom11 = this._contentSize.x / this._containerInnerSize.x;
-        var zoomValue = scale / this.viewer.slideInfo.SourceLens * zoom11;
+        var zoomValue = (scale/this.viewer.slideInfo.SourceLens)* zoom11; 
         //console.log(scale);
         //console.log(viewer.slideInfo.SourceLens);
         //console.log(zoom11);
@@ -19037,6 +19044,19 @@ $.Viewport.prototype = {
             });
         }
 
+        
+        //var zoom11 = this.viewport._contentSize.x / this.viewport._containerInnerSize.x;
+        //var zoomToValue = this.viewport.zoomSpring.target.value * factor;
+        //var scale = (zoomToValue / zoom11) * this.slideInfo.SourceLens;
+        //this.scrollWheelInSlider(scale); 
+        if (typeof (this.viewer.slideInfo)!= "undefined")
+        {
+            var zoom11 = this._contentSize.x / this._containerInnerSize.x;
+            var zoomToValue = zoom;// this.viewport.zoomSpring.target.value * factor;
+            var scale = (zoomToValue / zoom11) * this.viewer.slideinfo.SourceLens;
+            this.viewer.scrollWheelInSlider(scale); 
+        }
+        //console.log(this);
         return this;
     },
 
