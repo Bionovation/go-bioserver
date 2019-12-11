@@ -27,7 +27,7 @@ func stdToFile() {
 
 func main() {
 	// 重定向标准输出到文件
-	stdToFile()
+	//stdToFile()
 	bioConfig.readConfig(cfile) // 读取配置文件
 	go frpLogin()               // 登录frp代理服务
 	go clearRoutine(nil)        // 运行内存清理线程
@@ -47,7 +47,6 @@ func main() {
 	r.GET("/slidetile", handleSlideTile)
 	r.GET("/slidenail", handleSlideNail)
 
-	r.GET("/lua", handleLua)
 	r.GET("/test", handleTest)
 
 	r.Run(fmt.Sprintf(":%v", bioConfig.Common.ListenPort))

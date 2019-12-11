@@ -11,7 +11,6 @@ import (
 
 	"github.com/Bionovation/go-bioserver/cgo"
 	"github.com/gin-gonic/gin"
-	"github.com/yuin/gopher-lua"
 )
 
 func handleIndex(c *gin.Context) {
@@ -38,16 +37,6 @@ func handleImage(c *gin.Context) {
 }
 
 // 获取扫描数据列表
-/*func handleSlideList(c *gin.Context) {
-	sl, err := SlideList(bioConfig.Common.DataFolder)
-	if err != nil {
-		c.JSON(http.StatusNotFound, err)
-	} else {
-		c.JSON(http.StatusOK, sl)
-	}
-
-}*/
-
 func handleSlideList(c *gin.Context) {
 	res := NewRes()
 	sl, err := SlideList(bioConfig.Common.DataFolder)
@@ -91,7 +80,8 @@ func handleSlideList(c *gin.Context) {
 
 func handleSlideInfo(c *gin.Context) {
 	path := c.Query("path")
-	fmt.Println(path)
+
+	//fmt.Println("slideinfo", path)
 
 	res := NewRes()
 	infoPath := filepath.Join(path, "slideinfo.bic")
@@ -167,13 +157,6 @@ func handleSlideNail(c *gin.Context) {
 	}
 
 	c.Data(http.StatusOK, "image/jpeg", buf)
-}
-
-func handleLua(c *gin.Context) {
-	l := lua.NewState()
-	defer l.Close()
-	l.DoFile("./test.lua")
-	c.String(http.StatusOK, "ok")
 }
 
 func handleTest(c *gin.Context) {

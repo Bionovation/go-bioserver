@@ -70,6 +70,6 @@ func clearRoutine(gc *SlideGC) error {
 	for {
 		gc.Clear(30)
 		time.Sleep(time.Duration(11) * time.Second) // 每11秒执行一次
-		log.Println("Im still alive~")
+		//log.Println("Im still alive~")
 	}
 }

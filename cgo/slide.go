@@ -9,6 +9,9 @@ import "C"
 import (
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
+	"os"
+	"path/filepath"
 	"unsafe"
 )
 
@@ -27,32 +30,6 @@ func SlideTile(path string, level, x, y int) ([]byte, error) {
 
 	return buf, nil
 }
-
-// 玻片信息
-/*func SlideInfo(path string) (string, error) {
-	cpath := C.CString(path)
-	defer C.free(unsafe.Pointer(cpath))
-
-	b := make([]byte, 1024*1024)
-	cinfo := (*C.char)(unsafe.Pointer(&b[0]))
-	sz := C.ReadSlideInfo(cpath, cinfo)
-
-	ginfo := C.GoString(cinfo)
-	if sz < 0 || ginfo == "" {
-		return "", fmt.Errorf("ReadSlideInfo falied.")
-	}
-	return ginfo, nil
-
-	// slideinfopath := fmt.Sprintf("%s/slideinfo.json", path)
-	// inputFile, inputError := os.Open(slideinfopath)
-	// if inputError != nil {
-	// 	return nil, nil
-	// } else {
-	// 	return ioutil.ReadAll(f), nil
-	// }
-	// defer inputFile.Close()
-
-}*/
 
 func SlideWidthHeight(path string) (int, int, error) {
 	cpath := C.CString(path)
@@ -85,18 +62,24 @@ func SlideWidthHeight(path string) (int, int, error) {
 
 // 获取缩略图
 func SlideNail(path string) ([]byte, error) {
-	cpath := C.CString(path)
-	defer C.free(unsafe.Pointer(cpath))
 
-	bsize := 1024 * 1024 / 2
-	buf := make([]byte, bsize)
-	bs := C.ReadSlideNail(cpath, (*C.char)(unsafe.Pointer(&buf[0])), C.int(bsize))
-	if bs < 0 {
-		return nil, fmt.Errorf("read slide tile falied.")
+	nailPath := filepath.Join(path, "smallPic.jpg")
+
+	fmt.Println(nailPath)
+
+	pn, err := os.Open(nailPath)
+	if err != nil {
+		return nil, err
 	}
-	buf = buf[:bs]
+	defer pn.Close()
+
+	buf, err := ioutil.ReadAll(pn)
+	if err != nil {
+		return nil, err
+	}
 
 	return buf, nil
+
 }
 
 // 释放内存
