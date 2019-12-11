@@ -160,7 +160,7 @@ func handleSlideNail(c *gin.Context) {
 }
 
 func handleTest(c *gin.Context) {
-	res := NewRes()
+	/*res := NewRes()
 	str := `{"name":"gray"}`
 	var d map[string]interface{}
 	if err := json.Unmarshal([]byte(str), &d); err != nil {
@@ -168,5 +168,5 @@ func handleTest(c *gin.Context) {
 		return
 	}
 
-	res.DoneData(c, d)
+	res.DoneData(c, d)*/
 }
