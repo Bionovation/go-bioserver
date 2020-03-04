@@ -39,7 +39,7 @@ func main() {
 
 	bioConfig.readConfig(confFile) // 读取配置文件
 
-	//os.Args = append(os.Args, "F:\\BioSlides\\北京2019-11-18-09-52-29\\data.bimg")
+	// os.Args = append(os.Args, "F:\\BioSlides\\北京2019-11-18-09-52-29\\data.bimg")
 
 	if len(os.Args) == 2 {
 		// 如果是传入一个参数，则可能是打开本地文件
@@ -58,7 +58,7 @@ func viewLocalFile(path string) {
 		panic("error calling")
 	}
 
-	if filepath.Base(os.Args[1]) != "data.bimg" {
+	if filepath.Base(os.Args[1]) != "data.bimg" && filepath.Base(os.Args[1]) != "downlayer.bimg" {
 		panic("error ext")
 	}
 
@@ -75,22 +75,28 @@ func viewLocalFile(path string) {
 
 	urlStr = l.Scheme + "://" + l.Host + "?" + l.Query().Encode()
 	*/
-	fmt.Println(urlStr)
+	//fmt.Println(urlStr)
 
 	// 检查服务是否已经运行
 	n := servIsRunning()
 	if n == false {
 		// 如果只有这一个实例，则需要先启动看图服务再打开
 		go func() {
-			time.Sleep(time.Second / 2.0)
+			time.Sleep(time.Second * 2)
 			exec.Command(`cmd`, `/c`, `start`, urlStr).Start()
 		}()
 
 		// 	启动服务
 		runServ()
-	} else {
-		exec.Command(`cmd`, `/c`, `start`, urlStr).Start()
+
+		// 改成启动进程
+		/*exPath, _ := os.Executable()
+		exec.Command(`cmd`, `/c`, `start`, exPath).Start()
+		time.Sleep(time.Second * 2)*/
+
 	}
+	exec.Command(`cmd`, `/c`, `start`, urlStr).Start()
+
 }
 
 func runServ() {
@@ -109,8 +115,11 @@ func runServ() {
 	gin.SetMode(gin.ReleaseMode)
 	r := gin.Default()
 
-	r.StaticFS("/html", http.Dir("./html"))
-	r.StaticFS("/openseadragon", http.Dir("./html/openseadragon"))
+	exPath, _ := os.Executable()
+	folder := filepath.Dir(exPath)
+
+	r.StaticFS("/html", http.Dir(filepath.Join(folder, "./html")))
+	r.StaticFS("/openseadragon", http.Dir(filepath.Join(folder, "./html/openseadragon")))
 
 	r.GET("/", handleIndex)
 	r.GET("/host", handleHost)
