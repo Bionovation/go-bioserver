@@ -143,7 +143,11 @@ func handleSlideTile(c *gin.Context) {
 		return
 	}
 
-	bioGC.Visit(path) // gc
+	err = bioGC.Visit(path) // gc
+	if err != nil {
+		c.JSON(http.StatusNotFound, err)
+		return
+	}
 
 	c.Data(http.StatusOK, "image/jpeg", buf)
 }
@@ -157,6 +161,17 @@ func handleSlideNail(c *gin.Context) {
 	}
 
 	c.Data(http.StatusOK, "image/jpeg", buf)
+}
+
+// 标记删除某张玻片，将不可访问
+func handleSlideDel(c *gin.Context) {
+	path := c.Query("path")
+	if path == "" || len(path) == 0 {
+		c.String(http.StatusNotFound, "path is nil.")
+		return
+	}
+	bioGC.Delete(path)
+	c.String(http.StatusOK, "%v has been tag removed.", path)
 }
 
 func handleTest(c *gin.Context) {

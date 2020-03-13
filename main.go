@@ -134,6 +134,8 @@ func runServ() {
 	r.GET("/slidetile", handleSlideTile)
 	r.GET("/slidenail", handleSlideNail)
 
+	r.GET("/slidedelete", handleSlideDel)
+
 	r.GET("/test", handleTest)
 
 	r.Run(fmt.Sprintf(":%v", bioConfig.Common.ListenPort))

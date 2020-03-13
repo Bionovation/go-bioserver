@@ -88,5 +88,6 @@ func SlideClose(path string) error {
 	c := (*C.int)(unsafe.Pointer(&r[0]))
 
 	C.CloseSlide(c)
+
 	return nil
 }

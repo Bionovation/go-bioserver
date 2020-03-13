@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"log"
+	"strings"
 	"sync"
 	"time"
 
@@ -14,7 +15,8 @@ import (
 */
 
 type SlideGC struct {
-	Map sync.Map //当前已经打开的玻片列表,记录最后一次访问的事件
+	Map    sync.Map // 当前已经打开的玻片列表,记录最后一次访问的事件
+	MapDel sync.Map // 被删除的玻片列表，加入后将不可访问
 }
 
 var bioGC SlideGC // 默认实例
@@ -25,7 +27,31 @@ func (gc *SlideGC) Visit(path string) error {
 		return fmt.Errorf("gc is nil")
 	}
 
+	pp := strings.ReplaceAll(path, "\\", "_")
+	pp = strings.ReplaceAll(pp, "/", "_")
+	_, ok := gc.MapDel.Load(pp)
+	if ok {
+		return fmt.Errorf("file has been removed.")
+	}
+
 	gc.Map.Store(path, time.Now())
+	return nil
+}
+
+// 删除某个玻片
+func (gc *SlideGC) Delete(path string) error {
+	if gc == nil {
+		return fmt.Errorf("gc is nil")
+	}
+
+	pp := strings.ReplaceAll(path, "\\", "_")
+	pp = strings.ReplaceAll(pp, "/", "_")
+	gc.MapDel.Store(pp, time.Now())
+
+	log.Println(path, "clear...")
+
+	cgo.SlideClose(path)
+
 	return nil
 }
 
