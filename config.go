@@ -47,5 +47,5 @@ func (config *BioConfig) readConfig(conFile string) {
 		return
 	}
 
-	log.Printf("use config: %#v", config)
+	//log.Printf("use config: %#v", config)
 }
