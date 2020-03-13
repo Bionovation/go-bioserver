@@ -33,7 +33,7 @@ var bioConfig = BioConfig{
 	},
 	Proxy: ConfigProxy{
 		ServerAddr: "remotebionovation.com",
-		ServerPort: 7000,
+		ServerPort: 0,
 	},
 }
 

@@ -104,8 +104,12 @@ func runServ() {
 
 	// 重定向标准输出到文件
 	//stdToFile()
-	//bioConfig.readConfig(cfile) // 读取配置文件
-	//go frpLogin()               // 登录frp代理服务
+
+	// 登录frp代理服务
+	if bioConfig.Proxy.ServerPort != 0 {
+		go frpLogin()
+	}
+
 	go clearRoutine(nil) // 运行内存清理线程
 
 	log.Println("bioserver is running.")

@@ -111,7 +111,7 @@ func handleSlideInfo(c *gin.Context) {
 		return
 	}
 
-	if d["PhysicalWidth"] == float64(0) {
+	/*if d["PhysicalWidth"] == float64(0) {
 		bioGC.Visit(path)
 		var w, h int
 		var err error
@@ -121,7 +121,7 @@ func handleSlideInfo(c *gin.Context) {
 		} else {
 			fmt.Println("SlideWidthHeight:", err)
 		}
-	}
+	}*/
 
 	//res.DoneData(c, d)
 	c.JSON(http.StatusOK, d)
